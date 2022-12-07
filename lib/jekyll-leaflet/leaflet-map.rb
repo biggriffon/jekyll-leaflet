@@ -32,10 +32,13 @@ class LeafletMap < Liquid::Block
             File.expand_path("./leaflet-map.html", File.dirname(__FILE__)))
 
         @input = parse_liquid_output_in(@input, context)
+        siteConfig = context.registers[:site].config
+        leafletConfig = siteConfig['leaflet'].to_json
         id = SecureRandom.hex
         map_js = map_js % {id: id,
                            leaflet_providers_js_content: leaflet_providers_js_content,
                            tag_input_arg_json: @input,
+                           site_config: leafletConfig,
                            inside_block_leaflet_items: text}
         map_html = map_html % {id: id,
                                leaflet_map_js_content: map_js}
